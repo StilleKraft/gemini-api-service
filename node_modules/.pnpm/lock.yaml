@@ -11,6 +11,9 @@ importers:
       '@google/genai':
         specifier: ^1.30.0
         version: 1.30.0
+      express:
+        specifier: ^5.2.1
+        version: 5.2.1
       multer:
         specifier: ^2.0.2
         version: 2.0.2
@@ -30,9 +33,6 @@ importers:
       eslint:
         specifier: ^9.39.1
         version: 9.39.1
-      express:
-        specifier: ^5.2.1
-        version: 5.2.1
       install:
         specifier: ^0.13.0
         version: 0.13.0
