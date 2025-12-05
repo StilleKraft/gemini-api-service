@@ -109,7 +109,7 @@ Generate text/description based on an image and a text prompt.
     -   `Content-Type: multipart/form-data`
 -   **Body (Form Data):**
     -   `prompt` (text): The instruction for the AI (e.g., "Describe this image").
-    -   `image` (file): The image file to upload.
+    -   `image` (file): The image file to upload (JPEG, PNG).
 -   **Example (cURL):**
 
     ```bash
@@ -131,7 +131,73 @@ Generate text/description based on an image and a text prompt.
         ```
 
 -   **Error Response:**
-    -   **Code:** 400 Bad Request (if prompt or image is missing)
+    -   **Code:** 400 Bad Request (if prompt or image is missing, or incorrect file type)
+    -   **Code:** 500 Internal Server Error
+
+### 4. Generate Text from Document
+
+Generate text/summary based on a document and a text prompt.
+
+-   **URL:** `/generate-from-document`
+-   **Method:** `POST`
+-   **Headers:**
+    -   `Content-Type: multipart/form-data`
+-   **Body (Form Data):**
+    -   `prompt` (text): The instruction for the AI (e.g., "Summarize this document"). Defaults to "Tolong buatkan ringkasan dari dokumen berikut" if omitted.
+    -   `document` (file): The document file to upload (PDF only).
+-   **Example (cURL):**
+
+    ```bash
+    curl --location 'http://localhost:3000/api/v1/generate-from-document' \
+    --form 'prompt="Summarize this document"' \
+    --form 'document=@"/path/to/your/document.pdf"'
+    ```
+
+-   **Success Response:**
+    -   **Code:** 200 OK
+    -   **Content:**
+
+        ```json
+        {
+          "output": "Here is the summary of the document..."
+        }
+        ```
+
+-   **Error Response:**
+    -   **Code:** 400 Bad Request (if document is missing or incorrect file type)
+    -   **Code:** 500 Internal Server Error
+
+### 5. Generate Text from Audio
+
+Generate text/transcript based on an audio file and a text prompt.
+
+-   **URL:** `/generate-from-audio`
+-   **Method:** `POST`
+-   **Headers:**
+    -   `Content-Type: multipart/form-data`
+-   **Body (Form Data):**
+    -   `prompt` (text): The instruction for the AI (e.g., "Transcribe this audio"). Defaults to "Tolong buatkan transkrip dari audio berikut" if omitted.
+    -   `audio` (file): The audio file to upload (MP3 only).
+-   **Example (cURL):**
+
+    ```bash
+    curl --location 'http://localhost:3000/api/v1/generate-from-audio' \
+    --form 'prompt="Transcribe this audio"' \
+    --form 'audio=@"/path/to/your/audio.mp3"'
+    ```
+
+-   **Success Response:**
+    -   **Code:** 200 OK
+    -   **Content:**
+
+        ```json
+        {
+          "output": "This is the transcription of the audio..."
+        }
+        ```
+
+-   **Error Response:**
+    -   **Code:** 400 Bad Request (if audio is missing or incorrect file type)
     -   **Code:** 500 Internal Server Error
 
 ## Project Structure
