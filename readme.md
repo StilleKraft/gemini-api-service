@@ -57,25 +57,82 @@ npm start
 
 ## API Endpoints
 
-### Generate Text
+Base URL: `http://localhost:3000/api/v1`
 
--   **URL:** `/api/v1/gemini/generate-text`
+### 1. Health Check
+
+Check if the service is running.
+
+-   **URL:** `/ping`
+-   **Method:** `GET`
+-   **Success Response:**
+    -   **Code:** 200 OK
+    -   **Content:** `{ "message": "pong" }`
+
+### 2. Generate Text
+
+Generate text using Google Gemini AI based on a text prompt.
+
+-   **URL:** `/generate-text`
 -   **Method:** `POST`
+-   **Headers:**
+    -   `Content-Type: application/json`
 -   **Body:**
 
     ```json
     {
-      "prompt": "Your prompt here"
+      "prompt": "Explain quantum computing in simple terms"
     }
     ```
 
--   **Response:**
+-   **Success Response:**
+    -   **Code:** 200 OK
+    -   **Content:**
 
-    ```json
-    {
-      "text": "Generated response from Gemini..."
-    }
+        ```json
+        {
+          "text": "Quantum computing is..."
+        }
+        ```
+
+-   **Error Response:**
+    -   **Code:** 400 Bad Request (if prompt is missing)
+    -   **Code:** 500 Internal Server Error
+
+### 3. Generate Text from Image
+
+Generate text/description based on an image and a text prompt.
+
+-   **URL:** `/generate-from-image`
+-   **Method:** `POST`
+-   **Headers:**
+    -   `Content-Type: multipart/form-data`
+-   **Body (Form Data):**
+    -   `prompt` (text): The instruction for the AI (e.g., "Describe this image").
+    -   `image` (file): The image file to upload.
+-   **Example (cURL):**
+
+    ```bash
+    curl --location 'http://localhost:3000/api/v1/generate-from-image' \
+    --form 'prompt="Describe this image"' \
+    --form 'image=@"/path/to/your/image.png"'
     ```
+
+    *Note: Do not manually set the `Content-Type` header when using cURL for multipart/form-data; let cURL handle the boundary.*
+
+-   **Success Response:**
+    -   **Code:** 200 OK
+    -   **Content:**
+
+        ```json
+        {
+          "text": "The image shows a..."
+        }
+        ```
+
+-   **Error Response:**
+    -   **Code:** 400 Bad Request (if prompt or image is missing)
+    -   **Code:** 500 Internal Server Error
 
 ## Project Structure
 
