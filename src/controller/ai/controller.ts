@@ -1,4 +1,7 @@
-import { generateGeminiResponse } from "../../repository/gemini/gemini";
+import {
+  generateGeminiResponse,
+  generateGeminiResponseFromMedia,
+} from "../../repository/gemini/gemini";
 
 interface AiInterface {
   /**
@@ -14,6 +17,20 @@ interface AiInterface {
    * @throws An error if the Gemini API request fails.
    */
   GenerateText: (prompt: string) => Promise<string>;
+
+  /**
+   * Generate text using the Gemini API from an image.
+   * @param prompt - The prompt to send to the Gemini API.
+   * @param base64Image - The base64-encoded image to send to the Gemini API.
+   * @param mimeType - The MIME type of the image.
+   * @returns A promise that resolves to the generated text.
+   * @throws An error if the Gemini API request fails.
+   */
+  GenerateTextFromMedia: (
+    prompt: string,
+    base64Image: string,
+    mimeType: string
+  ) => Promise<string>;
 }
 
 export class AiController implements AiInterface {
@@ -27,6 +44,28 @@ export class AiController implements AiInterface {
     switch (this.LLModel) {
       case "gemini-ai":
         const { string, Error } = await generateGeminiResponse(prompt);
+        if (Error) {
+          console.error("Gemini API Error:", Error);
+          throw Error;
+        }
+        return string;
+      default:
+        return "";
+    }
+  }
+
+  async GenerateTextFromMedia(
+    prompt: string,
+    base64Image: string,
+    mimeType: string
+  ): Promise<string> {
+    switch (this.LLModel) {
+      case "gemini-ai":
+        const { string, Error } = await generateGeminiResponseFromMedia(
+          prompt,
+          base64Image,
+          mimeType
+        );
         if (Error) {
           console.error("Gemini API Error:", Error);
           throw Error;

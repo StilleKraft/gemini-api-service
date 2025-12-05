@@ -8,6 +8,6 @@ router.get("/ping", (req, res) => {
 });
 
 // AI Routes
-router.use("/gemini", aiRouter);
+router.use("/", aiRouter);
 
 export default router;
